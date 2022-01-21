@@ -1,0 +1,47 @@
+{
+  "name": "@ganobrega/store-lint-vtex",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A stylelint and eslint plugin for VTEX Conventions.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "clean": "npx -y rimraf yarn.lock node_modules",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ganobrega/store-lint-vtex.git"
+  },
+  "keywords": [
+    "stylelint",
+    "stylelint-plugin",
+    "css",
+    "nesting",
+    "linter",
+    "eslint",
+    "vtex",
+    "vtex-io",
+    "store-framework"
+  ],
+  "author": "GNA Tech.",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "7.32.0",
+    "eslint-plugin-import": "2.25.4",
+    "husky": "7.0.4",
+    "lint-staged": "12.1.7",
+    "prettier": "^2.5.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint"
+    ]
+  }
+}
