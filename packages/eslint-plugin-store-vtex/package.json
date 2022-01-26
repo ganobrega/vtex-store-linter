@@ -1,5 +1,5 @@
 {
-  "name": "@ganobrega/eslint-plugin-store-vtex",
+  "name": "@vtex-store-linter/eslint-plugin-store-vtex",
   "version": "0.0.0-alpha.0",
   "dependencies": {
     "axios": "^0.25.0",

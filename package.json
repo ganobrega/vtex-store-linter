@@ -1,5 +1,5 @@
 {
-  "name": "@ganobrega/store-lint-vtex",
+  "name": "vtex-store-linter",
   "version": "1.0.0",
   "private": true,
   "description": "A stylelint and eslint plugin for VTEX Conventions.",
