@@ -2,13 +2,13 @@
 const stylelint = require("stylelint");
 const path = require("path");
 const fs = require("fs-extra");
-const package = require("../../package.json");
+const pkg = require("../../package.json");
 
-const ruleName = `${package.name}/unknown-classname-handle`;
+const ruleName = `${pkg.name}/unknown-classname-handle`;
 
 const messages = stylelint.utils.ruleMessages(ruleName, {
   unknownClassName: (selector, filename) =>
-    `Unknow selector '${selector}' for the app '${filename}'.`,
+    `Unknow classname '${selector}' for '${filename}'.`,
 });
 
 module.exports = stylelint.createPlugin(
@@ -25,7 +25,13 @@ module.exports = stylelint.createPlugin(
 
       const apps = await fs.readJson(path.resolve("../../public/apps.json"));
       const dictionary = Object.fromEntries(
-        apps.map((x) => [x.style.filename, x.style.cssHandles])
+        apps.map((app) => [
+          app.appName + ".css",
+          Object.values(app.store.interfaces)
+            .filter((x) => x.classNames)
+            .map((x) => x.classNames)
+            .flat(),
+        ])
       );
 
       let filename = path.basename(root.source.input.from);
@@ -40,7 +46,8 @@ module.exports = stylelint.createPlugin(
           }
 
           rule.selectors.forEach((className) => {
-            if (validClassNames.some((x) => `.${x}` === className)) return;
+            if (validClassNames.some((x) => `.${x}` === className.trim()))
+              return;
 
             stylelint.utils.report({
               ruleName: ruleName,

@@ -2,9 +2,9 @@
 const stylelint = require("stylelint");
 const path = require("path");
 const fs = require("fs-extra");
-const package = require("../../package.json");
+const pkg = require("../../package.json");
 
-const ruleName = `${package.name}/unknown-filename-pattern`;
+const ruleName = `${pkg.name}/unknown-filename-pattern`;
 
 const messages = stylelint.utils.ruleMessages(ruleName, {
   invalid: (filename) =>
