@@ -6,11 +6,17 @@ Eslint and Stylelint plugin for assertiveness code on `store` and `styles` **VTE
 
 Comming soon...
 
-# TODO
+### TODO
 
 - [ ] - Using the apps.json, check if the docs folder of all repositories has the relational CSS Handles documented.
 
-## Authors
+### Maintainer
 
-- Gabriel Nobrega (@ganobrega)
-- Marco William (@marcoferreiradev)
+- [@ganobrega](https://github.com/ganobrega)
+- [@marcoferreiradev](https://github.com/Enzo3322)
+
+### Contributors
+
+- [@Enzo3322](https://github.com/Enzo3322)
+
+### License
