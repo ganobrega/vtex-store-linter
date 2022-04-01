@@ -10,6 +10,7 @@ const set = require("lodash/set");
 const values = require("lodash/values");
 const toPairs = require("lodash/toPairs");
 const fromPairs = require("lodash/fromPairs");
+const semver = require("semver");
 
 const githubOrigin = "https://github.com";
 const rawOrigin = "https://raw.githubusercontent.com";
@@ -36,7 +37,11 @@ const rawOrigin = "https://raw.githubusercontent.com";
 
       if (!manifest.version) throw "No version found!";
 
-      app["version"] = manifest.version;
+      let version = semver.parse(manifest.version);
+      version.minor = "x";
+      version.patch = "x";
+
+      app["version"] = version.format();
 
       const { data: interfaces } = await axios.get(
         `${rawOrigin}/${githubRepo}/master/store/interfaces.json`
@@ -89,19 +94,40 @@ const rawOrigin = "https://raw.githubusercontent.com";
                   )
                   ?.map((x) => x.slice(1).map((y) => [x[0], y].join("--")))
               )
+              .concat(
+                Object.keys(
+                  JSON.parse(
+                    raw
+                      ?.match(/\w+CSS_LOADER_EXPORT\w+.locals.*?\};/gms)
+                      ?.toString()
+                      ?.match(/.(?<=\{)\s*[^{]*?(?=[\}])./)
+                      ?.toString() ?? "{}"
+                  )
+                )
+              )
               .flat()
-              .filter((x) => x); // Clear null
+              .filter((x) => x) // Clear falsy values
+              .filter((x) => !x?.includes("vtex-"));
+
+            console.log(classNames);
 
             if (classNames) {
               face.classNames = uniqBy(classNames);
               interfaceFromPairs.push(face);
             }
-          } catch ({
-            response: {
-              status: statusCode,
-              config: { url },
-            },
-          }) {
+          } catch (error) {
+            if (!error.response) {
+              console.error(error);
+              return;
+            }
+
+            const {
+              response: {
+                status: statusCode,
+                config: { url },
+              },
+            } = error;
+
             console.log(`[${statusCode}]\t${url}`);
             // Possible solution for "Not Found" assets:
             // https://vtex.vtexassets.com/_v/public/assets/v1/published/bundle/public/react/asset.min.js?v=1&files=${app.appName}@${app.version},common,0,${face.component}&workspace=master
